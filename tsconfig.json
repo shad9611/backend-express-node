@@ -4,8 +4,9 @@
     "module": "commonjs",
     "target": "es6",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "models"],
   "exclude": ["node_modules"]
 }
