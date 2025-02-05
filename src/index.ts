@@ -1,43 +1,15 @@
-import cors from 'cors'
-import express from 'express'
-import UserModel from './models/user'
-import { connectToMongoDB } from './services/mongoose'
+import express from 'express';
+import sequelize from '../models/index'
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+const port = process.env.PORT || 3000;
 
-const startServer = async () => {
-  try {
-    await connectToMongoDB();
-    console.log("Conexión a MongoDB establecida.")
+sequelize.sync().then(() => {
+  console.log('Base de datos sincronizada con éxito');
+  app.listen(port, () => {
+    console.log(`Servidor corriendo en http://localhost:${port}`);
+  });
+}).catch((error: any) => {
+  console.error('Error al sincronizar la base de datos:', error);
+});
 
-    app.get('/', async (req, res):Promise<void> => {
-      res.send('<h1>hi</h1>')
-    })
-    
-    app.post('/users', async (req, res) => {
-      const { username, email, password } = req.body;
-      try {
-        const newUser = await UserModel.create({ username, email, password });
-        res.status(201).json(newUser);
-      } catch (error) {
-        if (error instanceof Error) {
-          res.status(400).json({ error: error.message });
-        } else {
-          res.status(400).json({ error: 'Unknown error' });
-        }
-      }
-    });
-
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
-
-  } catch (error) {
-    console.error("Error al iniciar el servidor:", error);
-  }
-}
-
-startServer();
