@@ -15,7 +15,6 @@ const clientOptions: ConnectOptions = {
 
 export async function connectToMongoDB(): Promise<void> {
   try {
-    // Conectar a MongoDB usando Mongoose
     await mongoose.connect(uri, clientOptions);
     console.log("Conectado exitosamente a MongoDB");
   } catch (error) {
