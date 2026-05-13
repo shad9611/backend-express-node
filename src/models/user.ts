@@ -10,8 +10,7 @@ const UserSchema: Schema = new Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-}, { timestamps: true }); // Añade campos createdAt y updatedAt
-
+}, { timestamps: true });
 const UserModel = mongoose.model<IUser>('User', UserSchema);
 
 export default UserModel;
